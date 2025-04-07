@@ -2,13 +2,12 @@
 <html>
   <head>
     <title>Chatbot</title>
-    <link rel="shortcut icon" type="imagex/png" href="robot.png">
     <style>
       body {
         font-family: Arial;
         margin-top: 0px;
         margin-bottom: 0px;
-        background-color: rgb(39, 46, 65);
+        background-color: rgb(53, 59, 74);
       }
 
       .send-button {
@@ -77,7 +76,6 @@
         -ms-overflow-style: none;
       }
 
-      /* New styles for welcome message */
       .welcome-message {
         color: white;
         text-align: center;
@@ -100,11 +98,30 @@
 
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
-
     <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
-
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    
     <script type="text/babel">
+      const customResponses = {
+        "what can you do": "Currently, I know how to flip a coin, roll a dice, or get today's date! Try asking: 'Flip a coin', 'Roll a dice' or 'What's today's date?'. What would you like to try?",
+        "your capabilities": "I can perform simple tasks like coin flipping, dice rolling and telling the current date. What would you like to try?",
+        "who created you": "I was created by an awesome developer using React!",
+        "your name": "I'm ChatBot, your friendly virtual assistant!",
+        "help": "You can ask me to: 1) Flip a coin 2) Roll a dice 3) Tell today's date. Try it out!"
+      };
+
+      function getCustomResponse(input) {
+        const lowerInput = input.toLowerCase().trim();
+        
+        for (const [question, answer] of Object.entries(customResponses)) {
+          if (lowerInput.includes(question)) {
+            return answer;
+          }
+        }
+        
+        return Chatbot.getResponse(input);
+      }
+
       function WelcomeMessage() {
         return (
           <div className="welcome-message">
@@ -149,7 +166,7 @@
           setIsLoading(true)
 
           setTimeout(() => {
-            const response = Chatbot.getResponse(inputText)
+            const response = getCustomResponse(inputText)
             setChatMessages([
               ...newChatMessages,
               {
